@@ -1,19 +1,32 @@
-const http = require('http');
-const fs = require('fs');
+const express = require("express");
+const cors = require("cors");
 
-const server = http.createServer((req, res) => {
-  fs.readFile('./app.html', 'utf8', (err, data) => {
-    if (err) {
-      res.writeHead(404);
-      res.end('File not found: ' + err.message);
-      return;
-    }
-    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-    res.end(data);
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+// ✅ LOGIN API
+app.post("/api/auth/login", (req, res) => {
+  const { email, password } = req.body;
+
+  if (email === "test@gmail.com" && password === "1234") {
+    res.send("Login success");
+  } else {
+    res.send("Invalid credentials");
+  }
+});
+
+// ✅ AI API
+app.post("/api/ai", (req, res) => {
+  const { text } = req.body;
+
+  res.json({
+    result: `AI Suggestion: Based on "${text}", stay hydrated & consult doctor if needed.`,
   });
 });
 
-server.listen(8080, () => {
-  console.log('✅ App is now running at http://localhost:8080');
-  console.log('Open your browser and go to http://localhost:8080');
+// ✅ SERVER START
+app.listen(5000, () => {
+  console.log("🚀 Backend running on http://127.0.0.1:5000");
 });
