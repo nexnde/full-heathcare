@@ -1,0 +1,164 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                   COPY-PASTE COMMANDS - DO THIS NOW!                      ║
+║                     (Just paste each into Terminal)                        ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ COMMAND 1: Navigate to Project Folder
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Copy this entire line:
+
+cd "c:\Users\Rohit\OneDrive\Desktop\Meditrace\medtrace"
+
+Then:
+1. Open Terminal (WIN+R → cmd → Enter)
+2. Right-click in terminal
+3. Click "Paste"
+4. Press Enter
+
+Expected result:
+  medtrace>
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ COMMAND 2: Install Dependencies
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Copy this:
+
+npm install
+
+Then:
+1. Paste into terminal (right-click → Paste)
+2. Press Enter
+3. Wait for completion (2-3 minutes)
+
+Expected result:
+  added X packages in Y seconds
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ COMMAND 3: Start Development Server
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Copy this:
+
+npm start
+
+Then:
+1. Paste into terminal
+2. Press Enter
+3. Wait for compilation (30-60 seconds)
+4. Keep terminal running!
+
+Expected result:
+  Compiled successfully!
+  Local: http://localhost:3000
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 4: Open Browser
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Copy this:
+
+http://localhost:3000
+
+Then:
+1. Open your browser (Chrome, Firefox, Safari, Edge)
+2. Paste in address bar
+3. Press Enter
+4. Wait 10-15 seconds
+
+Expected result:
+  Nestly app appears with dark theme!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ OPTIONAL: If Port 3000 is Already in Use
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use different port:
+
+npm start -- --port 3001
+
+Then open in browser:
+
+http://localhost:3001
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ OPTIONAL: To Stop the App
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In Terminal, press:
+
+Ctrl + C
+
+Expected result:
+  App stops, terminal shows "^C"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ OPTIONAL: To Start App Again
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In same Terminal:
+
+npm start
+
+Press Enter
+
+Expected result:
+  Compiled successfully! (again)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+QUICK SUMMARY:
+
+1. Terminal: cd "c:\Users\Rohit\OneDrive\Desktop\Meditrace\medtrace"
+2. Terminal: npm install
+3. Terminal: npm start
+4. Browser: http://localhost:3000
+5. Done! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+BUT BEFORE RUNNING THESE COMMANDS, YOU MUST:
+
+[ ] Copy these 5 files to src/ folder:
+    • AppNestly.js
+    • AppNestly.css
+    • OnboardingNestly.js
+    • HomeNestly.js
+    • BrowseNestly.js
+
+[ ] Create these 8 components from COMPONENT_TEMPLATES.js:
+    • MessagesNestly.js
+    • FavoritesNestly.js
+    • ProfileNestly.js
+    • NotificationsNestly.js
+    • SitterProfileNestly.js
+    • BookingSheetNestly.js
+    • FilterSheetNestly.js
+    • ToastNestly.js
+
+[ ] Update src/index.js:
+    Find:    import App from './App';
+    Replace: import AppNestly from './AppNestly';
+    
+    Find:    <App />
+    Replace: <AppNestly />
+
+IF YOU HAVEN'T DONE THESE, READ THE FULL GUIDES FIRST:
+
+→ VISUAL_STARTUP_GUIDE.md (Step 3, 4, 5 explain what to do)
+→ MASTER_CHECKLIST.md (Phases 2, 3, 4 with checkboxes)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+THEN RUN THESE COMMANDS IN ORDER:
+
+Step 1: Copy command 1 above to terminal
+Step 2: Copy command 2 above to terminal
+Step 3: Copy command 3 above to terminal
+Step 4: Copy URL above to browser
+
+DONE! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

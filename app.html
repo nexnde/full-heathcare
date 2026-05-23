@@ -1,0 +1,1315 @@
+/*ye bss tp h wo child care app ka html code bss*/
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Nestly — Find Your Perfect Sitter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0D0D0F;--bg2:#141416;--bg3:#1C1C20;--bg4:#242428;
+  --card:#1A1A1E;--card2:#222226;
+  --accent:#FF6B4A;--accent2:#4ECDC4;--accent3:#FFD93D;
+  --text:#F4F0E8;--text2:#A8A098;--text3:#6B6560;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --green:#2ECC71;--red:#E74C3C;--blue:#3B82F6;
+  --r8:8px;--r12:12px;--r16:16px;--r20:20px;--r24:24px;
+  --shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif}
+#root{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;overflow:hidden;background:var(--bg)}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:0;height:0}
+
+/* SCREENS */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);opacity:0;pointer-events:none;transform:translateX(30px);transition:opacity 0.28s ease,transform 0.28s ease;will-change:transform,opacity}
+.screen.active{opacity:1;pointer-events:all;transform:translateX(0)}
+.screen.slide-back{transform:translateX(-20px)}
+
+/* STATUS BAR */
+.sbar{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;font-size:12px;font-weight:500;color:var(--text2)}
+.sbar-icons{display:flex;align-items:center;gap:6px}
+
+/* TOP NAV */
+.topnav{display:flex;align-items:center;justify-content:space-between;padding:0 20px 16px;flex-shrink:0}
+.page-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:500;color:var(--text)}
+.page-sub{font-size:13px;color:var(--text2);margin-top:2px}
+.icon-btn{width:40px;height:40px;border-radius:var(--r12);background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0}
+.icon-btn:hover{background:var(--card2);border-color:var(--border2)}
+.icon-btn svg{width:18px;height:18px;color:var(--text)}
+
+/* BOTTOM NAV */
+.bnav{display:flex;background:var(--bg2);border-top:1px solid var(--border);padding:8px 0 28px;flex-shrink:0;position:relative;z-index:50}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:6px 4px;transition:all 0.2s;position:relative}
+.bnav-item svg{width:22px;height:22px;transition:all 0.2s;color:var(--text3)}
+.bnav-item span{font-size:10px;font-weight:500;color:var(--text3);transition:all 0.2s}
+.bnav-item.active svg{color:var(--accent)}
+.bnav-item.active span{color:var(--accent)}
+.bnav-badge{position:absolute;top:3px;right:calc(50% - 18px);width:16px;height:16px;background:var(--accent);border-radius:50%;font-size:9px;font-weight:600;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg2)}
+
+/* SCROLL AREA */
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+
+/* SEARCH BAR */
+.search-wrap{padding:0 20px 16px}
+.search-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r16);display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:text;transition:border-color 0.2s}
+.search-box:focus-within{border-color:var(--border2)}
+.search-box input{background:none;border:none;outline:none;font-size:14px;color:var(--text);font-family:'Outfit',sans-serif;flex:1;min-width:0}
+.search-box input::placeholder{color:var(--text3)}
+.search-box svg{color:var(--text3);flex-shrink:0;width:16px;height:16px}
+
+/* CHIPS */
+.chips{display:flex;gap:8px;padding:0 20px 20px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.chip{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:8px 16px;font-size:13px;white-space:nowrap;cursor:pointer;transition:all 0.2s;color:var(--text2);font-weight:400;flex-shrink:0}
+.chip.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+.chip:hover:not(.active){border-color:var(--border2);color:var(--text)}
+
+/* HERO BANNER */
+.hero{margin:0 20px 20px;background:linear-gradient(135deg,#1e1218 0%,#1a1a2e 100%);border-radius:var(--r24);padding:24px;position:relative;overflow:hidden;border:1px solid rgba(255,107,74,0.2)}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,107,74,0.15),transparent 70%);pointer-events:none}
+.hero-tag{background:rgba(255,107,74,0.15);color:var(--accent);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;width:fit-content;margin-bottom:10px}
+.hero-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;line-height:1.3;margin-bottom:8px}
+.hero-sub{font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.5}
+.hero-stats{display:flex;gap:20px}
+.hero-stat{font-size:11px;color:var(--text2)}
+.hero-stat strong{font-size:16px;color:var(--text);display:block;font-weight:600}
+
+/* SECTION HEADER */
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:0 20px 14px}
+.sec-title{font-size:15px;font-weight:600;color:var(--text)}
+.sec-link{font-size:13px;color:var(--accent);cursor:pointer}
+
+/* SITTER CARDS - HORIZONTAL SCROLL */
+.hscroll{display:flex;gap:14px;padding:0 20px 24px;overflow-x:auto;scrollbar-width:none}
+.hscroll::-webkit-scrollbar{display:none}
+
+/* FEATURED SITTER CARD */
+.scard-feat{background:var(--card);border:1px solid var(--border);border-radius:var(--r20);padding:16px;min-width:200px;max-width:200px;cursor:pointer;transition:transform 0.2s,border-color 0.2s;flex-shrink:0}
+.scard-feat:hover{transform:translateY(-2px);border-color:var(--border2)}
+.scard-avt{width:64px;height:64px;border-radius:var(--r16);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px;position:relative}
+.scard-online{width:12px;height:12px;background:var(--green);border-radius:50%;border:2px solid var(--card);position:absolute;bottom:2px;right:2px}
+.scard-name{font-size:15px;font-weight:600;margin-bottom:2px;color:var(--text)}
+.scard-loc{font-size:12px;color:var(--text2);margin-bottom:8px}
+.scard-stars{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2);margin-bottom:10px}
+.star{color:var(--accent3)}
+.scard-avail{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:500;width:fit-content;margin-bottom:10px}
+.avail-yes{background:rgba(46,204,113,0.12);color:var(--green)}
+.avail-no{background:rgba(255,107,74,0.1);color:var(--accent)}
+.scard-rate{font-size:14px;font-weight:600;color:var(--accent)}
+.scard-rate span{font-size:11px;color:var(--text2);font-weight:400}
+
+/* LIST SITTER CARD */
+.slist-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r20);padding:16px;cursor:pointer;transition:all 0.2s;display:flex;gap:14px;align-items:flex-start}
+.slist-card:hover{border-color:var(--border2);background:var(--card2)}
+.slist-avt{width:56px;height:56px;border-radius:var(--r12);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;position:relative}
+.slist-body{flex:1;min-width:0}
+.slist-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:3px}
+.slist-name{font-size:15px;font-weight:600;color:var(--text)}
+.slist-rate{font-size:14px;font-weight:600;color:var(--accent)}
+.slist-meta{font-size:12px;color:var(--text2);margin-bottom:8px}
+.slist-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{background:var(--bg3);border-radius:6px;padding:3px 8px;font-size:11px;color:var(--text2)}
+
+/* PROFILE SCREEN */
+.prof-hero{background:linear-gradient(180deg,var(--bg3) 0%,var(--bg) 100%);padding:20px 20px 0;flex-shrink:0}
+.prof-back{display:flex;align-items:center;gap:8px;margin-bottom:16px;cursor:pointer;color:var(--text2);font-size:14px;width:fit-content}
+.prof-back svg{width:18px;height:18px}
+.prof-top{display:flex;gap:16px;align-items:flex-start;margin-bottom:20px}
+.prof-avt{width:88px;height:88px;border-radius:var(--r20);display:flex;align-items:center;justify-content:center;font-size:42px;flex-shrink:0;border:2px solid var(--border2);position:relative}
+.prof-info{flex:1}
+.prof-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;color:var(--text);margin-bottom:4px}
+.prof-loc{font-size:13px;color:var(--text2);margin-bottom:8px}
+.prof-badges{display:flex;flex-wrap:wrap;gap:6px}
+.badge{border-radius:20px;padding:4px 10px;font-size:11px;font-weight:500}
+.badge-v{background:rgba(46,204,113,0.12);color:var(--green)}
+.badge-c{background:rgba(78,205,196,0.12);color:var(--accent2)}
+.badge-p{background:rgba(255,217,61,0.12);color:var(--accent3)}
+.prof-stats{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--card);margin:0 -20px}
+.prof-stat{flex:1;padding:14px 0;text-align:center;border-right:1px solid var(--border)}
+.prof-stat:last-child{border-right:none}
+.prof-stat-val{font-size:17px;font-weight:600;color:var(--text)}
+.prof-stat-lbl{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* TABS */
+.tabs{display:flex;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0;padding:0 20px}
+.tab{flex:1;padding:14px 0;text-align:center;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;margin-bottom:-1px}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* ABOUT TAB */
+.about-text{font-size:14px;color:var(--text2);line-height:1.8}
+.skill-tag{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--text);font-weight:500}
+.skills-grid{display:flex;flex-wrap:wrap;gap:8px}
+.info-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
+.info-row:last-child{border-bottom:none}
+.info-row svg{width:16px;height:16px;color:var(--text2);flex-shrink:0}
+.info-label{font-size:13px;color:var(--text2)}
+.info-val{font-size:13px;color:var(--text);margin-left:auto;font-weight:500}
+
+/* CALENDAR */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cal-month{font-size:15px;font-weight:600;color:var(--text)}
+.cal-nav{width:32px;height:32px;background:var(--card);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-lbl{text-align:center;font-size:11px;color:var(--text3);padding:4px 0;font-weight:500}
+.cal-d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:13px;cursor:pointer;transition:all 0.15s;color:var(--text2)}
+.cal-d.av{background:rgba(46,204,113,0.1);color:var(--green);font-weight:500}
+.cal-d.bk{background:rgba(255,107,74,0.1);color:var(--accent)}
+.cal-d.td{background:var(--accent);color:#fff;font-weight:700}
+.cal-d.sl{background:var(--accent2);color:#0D0D0F;font-weight:600}
+.cal-d.em{cursor:default;color:transparent}
+.cal-legend{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3)}
+.leg-dot{width:10px;height:10px;border-radius:3px}
+
+/* REVIEWS */
+.rev-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r16);padding:16px}
+.rev-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.rev-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;flex-shrink:0}
+.rev-name{font-size:13px;font-weight:600;color:var(--text)}
+.rev-date{font-size:11px;color:var(--text3)}
+.rev-stars{display:flex;gap:2px;font-size:12px;margin-bottom:8px}
+.rev-text{font-size:13px;color:var(--text2);line-height:1.7}
+
+/* RATING SUMMARY */
+.rating-sum{background:var(--card);border:1px solid var(--border);border-radius:var(--r16);padding:16px;margin-bottom:16px}
+.rating-big{font-size:42px;font-weight:600;color:var(--text);font-family:'Playfair Display',serif}
+.rating-bars{display:flex;flex-direction:column;gap:8px;flex:1}
+.rbar-row{display:flex;align-items:center;gap:10px}
+.rbar-lbl{font-size:11px;color:var(--text3);width:8px}
+.rbar-track{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.rbar-fill{height:100%;border-radius:3px;background:var(--accent3)}
+.rbar-cnt{font-size:11px;color:var(--text3);width:16px;text-align:right}
+
+/* BOOK BAR */
+.book-bar{padding:16px 20px 32px;background:var(--bg2);border-top:1px solid var(--border);flex-shrink:0}
+.book-info{display:flex;align-items:baseline;gap:4px;margin-bottom:12px}
+.book-price{font-family:'Playfair Display',serif;font-size:26px;font-weight:500;color:var(--text)}
+.book-unit{font-size:13px;color:var(--text2)}
+.book-avail{font-size:12px;color:var(--green);margin-left:auto}
+
+/* BUTTONS */
+.btn-p{background:var(--accent);color:#fff;border:none;border-radius:var(--r16);padding:16px;font-size:15px;font-weight:600;width:100%;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;letter-spacing:0.02em}
+.btn-p:hover{background:#ff7a5a}
+.btn-p:active{transform:scale(0.98)}
+.btn-s{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:var(--r16);padding:14px;font-size:14px;font-weight:500;width:100%;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s}
+.btn-s:hover{background:var(--card2);border-color:var(--border2)}
+.btn-row{display:flex;gap:10px}
+
+/* MESSAGES */
+.msg-thread{background:var(--card);border:1px solid var(--border);border-radius:var(--r20);padding:16px;cursor:pointer;display:flex;gap:12px;align-items:center;transition:all 0.2s;margin:0 20px 10px}
+.msg-thread:hover{background:var(--card2);border-color:var(--border2)}
+.msg-thread.unr{border-color:rgba(78,205,196,0.3)}
+.th-av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:var(--bg3);position:relative}
+.th-body{flex:1;min-width:0}
+.th-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
+.th-prev{font-size:13px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.th-time{font-size:11px;color:var(--text3);flex-shrink:0}
+.unr-dot{width:8px;height:8px;background:var(--accent2);border-radius:50%;flex-shrink:0}
+
+/* CHAT */
+.chat-hd{padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0}
+.chat-hd-av{width:42px;height:42px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:20px;position:relative}
+.chat-hd-online{width:10px;height:10px;background:var(--green);border-radius:50%;border:2px solid var(--bg2);position:absolute;bottom:1px;right:1px}
+.chat-hd-info{flex:1}
+.chat-hd-name{font-size:15px;font-weight:600;color:var(--text)}
+.chat-hd-sub{font-size:12px;color:var(--green)}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--bg)}
+.bubble{max-width:80%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.5}
+.bubble.them{background:var(--card);border:1px solid var(--border);border-bottom-left-radius:4px;align-self:flex-start;color:var(--text)}
+.bubble.me{background:var(--accent);color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
+.btime{font-size:10px;color:var(--text3);margin-top:4px;text-align:right}
+.btime.left{text-align:left}
+.book-req{background:var(--card);border:1px solid rgba(78,205,196,0.25);border-radius:var(--r16);padding:16px;max-width:88%;align-self:flex-start}
+.book-req-title{font-size:11px;font-weight:600;color:var(--accent2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px}
+.book-req-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);margin-bottom:6px}
+.book-req-row svg{width:14px;height:14px;color:var(--text3)}
+.book-req-row strong{color:var(--text)}
+.book-req-total{background:var(--bg3);border-radius:10px;padding:10px 12px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
+.book-req-total-lbl{font-size:12px;color:var(--text2)}
+.book-req-total-val{font-size:16px;font-weight:600;color:var(--accent)}
+.book-actions{display:flex;gap:8px;margin-top:0}
+.btn-acc{background:var(--green);color:#fff;border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;flex:1;transition:opacity 0.2s}
+.btn-dec{background:var(--card2);color:var(--text2);border:1px solid var(--border);border-radius:10px;padding:10px;font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;flex:1}
+.chat-in-wrap{padding:12px 16px 28px;background:var(--bg2);border-top:1px solid var(--border);display:flex;gap:10px;align-items:flex-end;flex-shrink:0}
+.chat-in{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:22px;padding:12px 16px;font-size:14px;font-family:'Outfit',sans-serif;color:var(--text);outline:none;resize:none;max-height:100px;min-height:44px;transition:border-color 0.2s}
+.chat-in:focus{border-color:var(--border2)}
+.send-btn{width:44px;height:44px;background:var(--accent);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.2s}
+.send-btn:hover{background:#ff7a5a}
+.send-btn:active{transform:scale(0.92)}
+.chat-attach-row{display:flex;gap:8px;padding:8px 16px 0;flex-wrap:wrap}
+.chat-quick{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:12px;color:var(--text2);cursor:pointer;white-space:nowrap;transition:all 0.2s}
+.chat-quick:hover{border-color:var(--border2);color:var(--text)}
+
+/* MY PROFILE */
+.my-hero{background:var(--bg3);padding:24px 20px;flex-shrink:0;text-align:center;border-bottom:1px solid var(--border)}
+.my-avt{width:80px;height:80px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 12px;border:2px solid var(--border2)}
+.my-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;color:var(--text);margin-bottom:4px}
+.my-sub{font-size:13px;color:var(--text2)}
+.role-switch{display:flex;background:var(--bg4);border-radius:12px;padding:4px;gap:4px;margin:0 20px 16px}
+.role-btn{flex:1;padding:10px;text-align:center;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;color:var(--text3);transition:all 0.2s}
+.role-btn.active{background:var(--card2);color:var(--text);border:1px solid var(--border2)}
+.my-section{padding:16px 20px;border-bottom:1px solid var(--border)}
+.my-sec-title{font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px}
+.my-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.my-row:last-child{border-bottom:none}
+.my-row-left{display:flex;align-items:center;gap:12px}
+.my-row-icon{width:34px;height:34px;background:var(--bg3);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.my-row-icon svg{width:16px;height:16px;color:var(--text2)}
+.my-row-label{font-size:14px;color:var(--text)}
+.my-row-right{display:flex;align-items:center;gap:6px;color:var(--text3);font-size:13px}
+.my-row-right svg{width:14px;height:14px;color:var(--text3)}
+.toggle{width:46px;height:26px;background:var(--accent);border-radius:13px;position:relative;cursor:pointer;flex-shrink:0;transition:background 0.2s}
+.toggle-k{width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:3px;right:3px;transition:right 0.2s}
+.toggle.off{background:var(--bg4)}
+.toggle.off .toggle-k{right:23px}
+.booking-status{display:flex;gap:6px;align-items:center;font-size:12px;padding:4px 10px;border-radius:20px;font-weight:500;width:fit-content}
+.bs-pending{background:rgba(255,217,61,0.1);color:var(--accent3)}
+.bs-confirmed{background:rgba(46,204,113,0.1);color:var(--green)}
+.bs-done{background:rgba(255,255,255,0.05);color:var(--text3)}
+
+/* SITTER DASHBOARD */
+.earn-card{background:linear-gradient(135deg,#1a1220 0%,#1a2020 100%);border:1px solid rgba(78,205,196,0.2);border-radius:var(--r20);padding:20px;margin:0 20px 20px}
+.earn-sub{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
+.earn-amt{font-family:'Playfair Display',serif;font-size:36px;font-weight:500;color:var(--text);margin-bottom:4px}
+.earn-meta{font-size:13px;color:var(--text2)}
+.earn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.earn-mini{background:rgba(255,255,255,0.04);border-radius:12px;padding:12px}
+.earn-mini-val{font-size:18px;font-weight:600;color:var(--text);margin-bottom:2px}
+.earn-mini-lbl{font-size:11px;color:var(--text3)}
+
+/* BOOK REQUEST SHEET */
+.sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s;display:flex;align-items:flex-end;max-width:430px;margin:0 auto}
+.sheet-overlay.open{opacity:1;pointer-events:all}
+.sheet{background:var(--bg2);border-radius:var(--r24) var(--r24) 0 0;padding:24px 20px 40px;width:100%;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.34,1.2,0.64,1)}
+.sheet-overlay.open .sheet{transform:translateY(0)}
+.sheet-handle{width:40px;height:4px;background:var(--bg4);border-radius:2px;margin:0 auto 20px}
+.sheet-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;color:var(--text);margin-bottom:6px}
+.sheet-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+.form-group{margin-bottom:16px}
+.form-label{font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;display:block}
+.form-input{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r12);padding:14px 16px;font-size:14px;color:var(--text);font-family:'Outfit',sans-serif;width:100%;outline:none;transition:border-color 0.2s}
+.form-input:focus{border-color:var(--border2)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.time-slots{display:flex;flex-wrap:wrap;gap:8px}
+.time-slot{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;color:var(--text2);cursor:pointer;transition:all 0.2s}
+.time-slot.sel{background:rgba(78,205,196,0.1);border-color:var(--accent2);color:var(--accent2)}
+.price-preview{background:var(--bg3);border-radius:var(--r12);padding:14px;margin-bottom:16px}
+.pp-row{display:flex;justify-content:space-between;font-size:13px;color:var(--text2);margin-bottom:6px}
+.pp-row:last-child{font-size:15px;font-weight:600;color:var(--text);margin-bottom:0;padding-top:8px;border-top:1px solid var(--border)}
+
+/* NOTIFICATIONS */
+.notif-item{display:flex;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.2s}
+.notif-item:hover{background:var(--card)}
+.notif-item.unr{background:rgba(78,205,196,0.04)}
+.notif-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.notif-body{flex:1}
+.notif-text{font-size:14px;color:var(--text);line-height:1.5;margin-bottom:4px}
+.notif-text b{color:var(--accent)}
+.notif-time{font-size:11px;color:var(--text3)}
+
+/* FAVOURITES */
+.fav-empty{text-align:center;padding:60px 20px;color:var(--text3)}
+.fav-empty svg{width:48px;height:48px;color:var(--text3);margin-bottom:16px}
+.fav-empty p{font-size:14px;margin-top:8px;color:var(--text2)}
+
+/* ONBOARDING */
+.onboard{position:fixed;inset:0;background:var(--bg);z-index:300;display:flex;flex-direction:column;max-width:430px;margin:0 auto;opacity:1;transition:opacity 0.4s}
+.onboard.hidden{opacity:0;pointer-events:none}
+.ob-slides{flex:1;overflow:hidden;position:relative}
+.ob-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center;opacity:0;transform:translateX(60px);transition:all 0.4s}
+.ob-slide.active{opacity:1;transform:translateX(0)}
+.ob-slide.prev{opacity:0;transform:translateX(-60px)}
+.ob-emoji{font-size:80px;margin-bottom:28px;line-height:1}
+.ob-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:500;color:var(--text);margin-bottom:12px;line-height:1.2}
+.ob-sub{font-size:15px;color:var(--text2);line-height:1.7}
+.ob-dots{display:flex;gap:8px;justify-content:center;padding:24px}
+.ob-dot{width:8px;height:8px;border-radius:4px;background:var(--bg4);transition:all 0.3s}
+.ob-dot.active{background:var(--accent);width:24px}
+.ob-footer{padding:20px 24px 44px;display:flex;flex-direction:column;gap:10px}
+.role-pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px 24px 0}
+.role-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r20);padding:20px;text-align:center;cursor:pointer;transition:all 0.2s}
+.role-card.sel{border-color:var(--accent);background:rgba(255,107,74,0.05)}
+.role-card-emoji{font-size:36px;margin-bottom:10px}
+.role-card-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.role-card-sub{font-size:12px;color:var(--text2);line-height:1.4}
+
+/* MISC */
+.divider{height:1px;background:var(--border);margin:0 20px}
+.p20{padding:20px}
+.px20{padding:0 20px}
+.mb12{margin-bottom:12px}
+.mb16{margin-bottom:16px}
+.mb20{margin-bottom:20px}
+.gap12{display:flex;flex-direction:column;gap:12px}
+.gap16{display:flex;flex-direction:column;gap:16px}
+.text-accent{color:var(--accent)}
+.text-muted{color:var(--text2)}
+.text-xs{font-size:11px}
+.font-serif{font-family:'Playfair Display',serif}
+.verified-check{display:inline-flex;align-items:center;gap:4px;color:var(--green);font-size:11px;font-weight:600}
+.fav-btn{position:absolute;top:8px;right:8px;width:28px;height:28px;background:rgba(0,0,0,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all 0.2s}
+.fav-btn.active{color:var(--accent)}
+
+/* TOAST */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card2);border:1px solid var(--border2);border-radius:var(--r12);padding:12px 20px;font-size:13px;color:var(--text);z-index:500;opacity:0;transition:all 0.3s;white-space:nowrap;pointer-events:none;max-width:390px}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* LOADING SKELETON */
+.skel{background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:skel-anim 1.5s infinite;border-radius:8px}
+@keyframes skel-anim{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* QUICK FILTER SHEET */
+.filter-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.filter-opt{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r12);padding:12px;text-align:center;cursor:pointer;font-size:13px;color:var(--text2);transition:all 0.2s}
+.filter-opt.sel{background:rgba(255,107,74,0.08);border-color:var(--accent);color:var(--accent)}
+.range-wrap{margin-bottom:16px}
+.range-val{display:flex;justify-content:space-between;font-size:13px;color:var(--text2);margin-bottom:8px}
+input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.pulsing{animation:pulse 2s infinite}
+
+@media(min-width:430px){#root{border-left:1px solid var(--border);border-right:1px solid var(--border)}}
+</style>
+</head>
+<body>
+<div id="root">
+
+<!-- ONBOARDING -->
+<div class="onboard" id="onboard">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;flex-shrink:0">
+    <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:500;color:var(--text)">nestly</div>
+    <div style="font-size:13px;color:var(--text2);cursor:pointer" onclick="skipOnboard()">Skip</div>
+  </div>
+  <div class="ob-slides">
+    <div class="ob-slide active" id="ob0">
+      <div class="ob-emoji">🏠</div>
+      <div class="ob-title">Trusted childcare, close to home</div>
+      <div class="ob-sub">Find vetted babysitters and nannies in your neighbourhood. Background-checked and parent-reviewed.</div>
+    </div>
+    <div class="ob-slide" id="ob1">
+      <div class="ob-emoji">📅</div>
+      <div class="ob-title">Book in minutes, not hours</div>
+      <div class="ob-sub">View real-time availability, send booking requests, and get confirmed — all in one place.</div>
+    </div>
+    <div class="ob-slide" id="ob2">
+      <div class="ob-emoji">💬</div>
+      <div class="ob-title">Stay in the loop, always</div>
+      <div class="ob-sub">Chat with sitters, receive check-in updates, and manage everything from your phone.</div>
+    </div>
+    <div class="ob-slide" id="ob3">
+      <div class="ob-emoji">✨</div>
+      <div class="ob-title">I am a...</div>
+      <div style="width:100%;margin-top:8px">
+        <div class="role-pick">
+          <div class="role-card sel" id="rc-parent" onclick="pickRole('parent')">
+            <div class="role-card-emoji">👪</div>
+            <div class="role-card-title">Parent</div>
+            <div class="role-card-sub">Find trusted sitters for my children</div>
+          </div>
+          <div class="role-card" id="rc-sitter" onclick="pickRole('sitter')">
+            <div class="role-card-emoji">🌟</div>
+            <div class="role-card-title">Sitter</div>
+            <div class="role-card-sub">Offer my childcare services</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ob-dots">
+    <div class="ob-dot active" id="od0"></div>
+    <div class="ob-dot" id="od1"></div>
+    <div class="ob-dot" id="od2"></div>
+    <div class="ob-dot" id="od3"></div>
+  </div>
+  <div class="ob-footer">
+    <button class="btn-p" id="ob-btn" onclick="nextSlide()">Get Started</button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<!-- SCREEN: HOME -->
+<div class="screen active" id="s-home">
+  <div class="sbar">
+    <span>9:41</span>
+    <div class="sbar-icons">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M1.5 8.5a13 13 0 0 1 21 0M5 12a10 10 0 0 1 14 0M8.5 15.5a6 6 0 0 1 7 0M12 19h.01"/></svg>
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><rect x="1" y="6" width="18" height="12" rx="2"/><path d="M23 13V11"/></svg>
+    </div>
+  </div>
+  <div class="topnav">
+    <div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:2px">📍 Navrangpura, Ahmedabad</div>
+      <div class="page-title">Find a Sitter</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <div class="icon-btn" onclick="openFilter()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      </div>
+      <div class="icon-btn" style="position:relative" onclick="go('s-notifs')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="bnav-badge" style="top:6px;right:6px;width:8px;height:8px;min-width:0"></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="search-wrap">
+      <div class="search-box">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search by name, area, skill…" id="homeSearch" oninput="liveSearch()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="cursor:pointer" onclick="openFilter()"><path d="M12 2a3 3 0 0 0-3 3v4a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10a7 7 0 0 1-14 0"/><path d="M12 19v3"/></svg>
+      </div>
+    </div>
+    <div class="chips" id="homeChips">
+      <div class="chip active" onclick="filterChip(this,'all')">All Sitters</div>
+      <div class="chip" onclick="filterChip(this,'today')">Available Today</div>
+      <div class="chip" onclick="filterChip(this,'cheap')">Under ₹300</div>
+      <div class="chip" onclick="filterChip(this,'top')">Top Rated</div>
+      <div class="chip" onclick="filterChip(this,'verified')">Verified Only</div>
+      <div class="chip" onclick="filterChip(this,'newborn')">Newborns</div>
+    </div>
+    <div class="hero">
+      <div class="hero-tag">🔥 Today's Picks</div>
+      <div class="hero-title">3 sitters available<br>near you right now</div>
+      <div class="hero-sub">Priya, Arjun & Divya are online and accepting bookings.</div>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>116M+</strong>families helped</div>
+        <div class="hero-stat"><strong>4.9★</strong>avg rating</div>
+        <div class="hero-stat"><strong>2min</strong>avg response</div>
+      </div>
+    </div>
+    <div class="sec-head">
+      <div class="sec-title">Featured Sitters</div>
+      <div class="sec-link" onclick="go('s-browse')">See all →</div>
+    </div>
+    <div class="hscroll" id="featuredScroll">
+      <div class="scard-feat" onclick="openProfile('priya')">
+        <div class="scard-avt" style="background:rgba(255,107,74,0.1)">👩<div class="scard-online"></div></div>
+        <div class="scard-name">Priya Mehta</div>
+        <div class="scard-loc">📍 Navrangpura · 0.8km</div>
+        <div class="scard-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span> 4.9 (38)</div>
+        <div class="scard-avail avail-yes">Available today</div>
+        <div class="scard-rate">₹280<span>/hr</span></div>
+      </div>
+      <div class="scard-feat" onclick="openProfile('arjun')">
+        <div class="scard-avt" style="background:rgba(59,130,246,0.1)">👨<div class="scard-online"></div></div>
+        <div class="scard-name">Arjun Patel</div>
+        <div class="scard-loc">📍 Satellite · 2.1km</div>
+        <div class="scard-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span> 4.8 (52)</div>
+        <div class="scard-avail avail-yes">Available today</div>
+        <div class="scard-rate">₹320<span>/hr</span></div>
+      </div>
+      <div class="scard-feat" onclick="openProfile('divya')">
+        <div class="scard-avt" style="background:rgba(255,217,61,0.1)">👩<div class="scard-online" style="background:var(--accent3)"></div></div>
+        <div class="scard-name">Divya Joshi</div>
+        <div class="scard-loc">📍 Maninagar · 3.4km</div>
+        <div class="scard-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span> 5.0 (74)</div>
+        <div class="scard-avail avail-yes">Available today</div>
+        <div class="scard-rate">₹380<span>/hr</span></div>
+      </div>
+      <div class="scard-feat" onclick="openProfile('neha')">
+        <div class="scard-avt" style="background:rgba(46,204,113,0.1)">👩</div>
+        <div class="scard-name">Neha Shah</div>
+        <div class="scard-loc">📍 Vastrapur · 1.6km</div>
+        <div class="scard-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>☆ 4.4 (19)</div>
+        <div class="scard-avail avail-no">Busy weekdays</div>
+        <div class="scard-rate">₹220<span>/hr</span></div>
+      </div>
+    </div>
+    <div class="sec-head">
+      <div class="sec-title">All Sitters</div>
+      <div class="sec-link" id="homeCount">12 results</div>
+    </div>
+    <div class="px20 gap12 mb20" id="sitterList">
+      <!-- populated by JS -->
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="bnav-item active" onclick="go('s-home')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </div>
+    <div class="bnav-item" onclick="go('s-browse')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span>Browse</span>
+    </div>
+    <div class="bnav-item" onclick="go('s-messages')" style="position:relative">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Messages</span>
+      <div class="bnav-badge" id="msgBadge">2</div>
+    </div>
+    <div class="bnav-item" onclick="go('s-favs')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span>Saved</span>
+    </div>
+    <div class="bnav-item" onclick="go('s-profile-me')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Me</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: BROWSE -->
+<div class="screen" id="s-browse">
+  <div class="sbar"><span>9:41</span><div class="sbar-icons"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><rect x="1" y="6" width="18" height="12" rx="2"/><path d="M23 13V11"/></svg></div></div>
+  <div class="topnav">
+    <div><div class="page-title">Browse</div><div class="page-sub" id="browseCount">12 sitters near you</div></div>
+    <div class="icon-btn" onclick="openFilter()">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+    </div>
+  </div>
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search sitters…" id="browseSearch" oninput="browseFilter()">
+    </div>
+  </div>
+  <div class="chips" id="browseChips">
+    <div class="chip active" onclick="filterBChip(this,'all')">All</div>
+    <div class="chip" onclick="filterBChip(this,'today')">Today</div>
+    <div class="chip" onclick="filterBChip(this,'cheap')">Budget</div>
+    <div class="chip" onclick="filterBChip(this,'top')">Top Rated</div>
+    <div class="chip" onclick="filterBChip(this,'verified')">Verified</div>
+  </div>
+  <div class="scroll">
+    <div class="px20 gap12 mb20" style="padding-top:8px" id="browseList"></div>
+  </div>
+  <div class="bnav">
+    <div class="bnav-item" onclick="go('s-home')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+    <div class="bnav-item active"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span>Browse</span></div>
+    <div class="bnav-item" onclick="go('s-messages')" style="position:relative"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Messages</span><div class="bnav-badge" id="msgBadge2">2</div></div>
+    <div class="bnav-item" onclick="go('s-favs')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Saved</span></div>
+    <div class="bnav-item" onclick="go('s-profile-me')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Me</span></div>
+  </div>
+</div>
+
+<!-- SCREEN: SITTER PROFILE -->
+<div class="screen" id="s-sitter-profile" style="overflow:hidden">
+  <div style="overflow-y:auto;flex:1" id="profileScroll">
+    <div class="sbar" style="position:sticky;top:0;z-index:10;background:var(--bg3)">
+      <div class="prof-back" onclick="goBack()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        <span id="backLabel">Back</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <div class="icon-btn" onclick="toggleFav()" id="favIconBtn">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" id="favIcon"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="icon-btn" onclick="go('s-chat')">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="prof-hero">
+      <div class="prof-top">
+        <div class="prof-avt" id="profAvt">👩</div>
+        <div class="prof-info">
+          <div class="prof-name" id="profName">Priya Mehta</div>
+          <div class="prof-loc" id="profLoc">📍 Navrangpura · 0.8km away</div>
+          <div class="prof-badges">
+            <div class="badge badge-v">✓ Verified</div>
+            <div class="badge badge-c">CPR Certified</div>
+            <div class="badge badge-p" id="profAvailBadge">Available today</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="prof-stats">
+      <div class="prof-stat"><div class="prof-stat-val" id="profRating">4.9★</div><div class="prof-stat-lbl">Rating</div></div>
+      <div class="prof-stat"><div class="prof-stat-val" id="profReviews">38</div><div class="prof-stat-lbl">Reviews</div></div>
+      <div class="prof-stat"><div class="prof-stat-val" id="profExp">4 yrs</div><div class="prof-stat-lbl">Exp</div></div>
+      <div class="prof-stat"><div class="prof-stat-val" id="profRate">₹280</div><div class="prof-stat-lbl">Per hour</div></div>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(0)">About</div>
+      <div class="tab" onclick="switchTab(1)">Calendar</div>
+      <div class="tab" onclick="switchTab(2)">Reviews</div>
+      <div class="tab" onclick="switchTab(3)">Gallery</div>
+    </div>
+    <div id="tpanel0" style="padding:20px;display:flex;flex-direction:column;gap:16px">
+      <div class="about-text" id="profBio">Hi! I'm Priya, a certified childcare provider with 4+ years working with toddlers and school-age children. I'm CPR trained, punctual, and love making learning fun through play. I've worked with 40+ families in Ahmedabad and hold a Diploma in Early Childhood Education.</div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px">Skills & Specialties</div>
+        <div class="skills-grid" id="profSkills">
+          <div class="skill-tag">Toddlers (1–3)</div>
+          <div class="skill-tag">School-age</div>
+          <div class="skill-tag">CPR Certified</div>
+          <div class="skill-tag">Homework Help</div>
+          <div class="skill-tag">Arts & Crafts</div>
+          <div class="skill-tag">Light Cooking</div>
+          <div class="skill-tag">Swimming Supervision</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px">Details</div>
+        <div class="info-row"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/></svg><div class="info-label">Location</div><div class="info-val" id="profDetLoc">Navrangpura, Ahmedabad</div></div>
+        <div class="info-row"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div class="info-label">Available</div><div class="info-val">Weekdays & Weekends</div></div>
+        <div class="info-row"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="info-label">Age groups</div><div class="info-val" id="profAges">1–12 years</div></div>
+        <div class="info-row"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div class="info-label">Languages</div><div class="info-val">Gujarati, Hindi, English</div></div>
+        <div class="info-row"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><div class="info-label">Response time</div><div class="info-val" style="color:var(--green)">~45 minutes</div></div>
+      </div>
+    </div>
+    <div id="tpanel1" style="padding:20px;display:none;flex-direction:column;gap:16px">
+      <div>
+        <div class="cal-head">
+          <div class="cal-month" id="calMonth">May 2026</div>
+          <div style="display:flex;gap:6px">
+            <div class="cal-nav" onclick="calNav(-1)">‹</div>
+            <div class="cal-nav" onclick="calNav(1)">›</div>
+          </div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <div class="leg"><div class="leg-dot" style="background:rgba(46,204,113,0.2);border:1px solid var(--green)"></div>Available</div>
+          <div class="leg"><div class="leg-dot" style="background:rgba(255,107,74,0.15);border:1px solid var(--accent)"></div>Booked</div>
+          <div class="leg"><div class="leg-dot" style="background:var(--accent)"></div>Today</div>
+          <div class="leg"><div class="leg-dot" style="background:var(--accent2)"></div>Selected</div>
+        </div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r16);padding:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px" id="calSelText">Tap a date to request a booking</div>
+        <div style="font-size:12px;color:var(--text2)" id="calSelSub">Available dates highlighted in green</div>
+      </div>
+      <button class="btn-p" onclick="openBookSheet()">Request a Booking</button>
+    </div>
+    <div id="tpanel2" style="padding:20px;display:none;flex-direction:column;gap:14px">
+      <div class="rating-sum">
+        <div style="display:flex;gap:20px;align-items:center">
+          <div>
+            <div class="rating-big" id="profRatingBig">4.9</div>
+            <div style="display:flex;gap:2px;font-size:14px;margin-bottom:4px"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+            <div style="font-size:12px;color:var(--text3)" id="profRevCount">38 reviews</div>
+          </div>
+          <div class="rating-bars">
+            <div class="rbar-row"><div class="rbar-lbl">5</div><div class="rbar-track"><div class="rbar-fill" style="width:88%"></div></div><div class="rbar-cnt">34</div></div>
+            <div class="rbar-row"><div class="rbar-lbl">4</div><div class="rbar-track"><div class="rbar-fill" style="width:8%;background:var(--accent2)"></div></div><div class="rbar-cnt">3</div></div>
+            <div class="rbar-row"><div class="rbar-lbl">3</div><div class="rbar-track"><div class="rbar-fill" style="width:3%;background:var(--accent3)"></div></div><div class="rbar-cnt">1</div></div>
+            <div class="rbar-row"><div class="rbar-lbl">2</div><div class="rbar-track"><div class="rbar-fill" style="width:0%;background:var(--accent)"></div></div><div class="rbar-cnt">0</div></div>
+            <div class="rbar-row"><div class="rbar-lbl">1</div><div class="rbar-track"><div class="rbar-fill" style="width:0%;background:var(--red)"></div></div><div class="rbar-cnt">0</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-top"><div class="rev-av" style="background:rgba(255,107,74,0.15);color:var(--accent)">SK</div><div><div class="rev-name">Sunita Kapoor</div><div class="rev-date">March 2026</div></div><div style="margin-left:auto;font-size:12px;color:var(--accent3)">★★★★★</div></div>
+        <div class="rev-text">Priya was absolutely wonderful with my 3-year-old. He fell asleep with a smile. Will definitely book again — she goes above and beyond every time!</div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-top"><div class="rev-av" style="background:rgba(46,204,113,0.15);color:var(--green)">RD</div><div><div class="rev-name">Rahul Desai</div><div class="rev-date">February 2026</div></div><div style="margin-left:auto;font-size:12px;color:var(--accent3)">★★★★★</div></div>
+        <div class="rev-text">Very trustworthy and communicative. Sent updates throughout the evening. My twins adore her!</div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-top"><div class="rev-av" style="background:rgba(59,130,246,0.15);color:var(--blue)">AB</div><div><div class="rev-name">Anita Bhatt</div><div class="rev-date">January 2026</div></div><div style="margin-left:auto;font-size:12px;color:var(--accent3)">★★★★★</div></div>
+        <div class="rev-text">Reliable, caring and great with homework. My daughter loves her sessions. Always on time.</div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-top"><div class="rev-av" style="background:rgba(255,217,61,0.15);color:var(--accent3)">VM</div><div><div class="rev-name">Vivek Malhotra</div><div class="rev-date">December 2025</div></div><div style="margin-left:auto;font-size:12px;color:var(--accent3)">★★★★☆</div></div>
+        <div class="rev-text">Great with kids! Arrived slightly late but called ahead. Would still recommend her warmly to anyone looking for a reliable sitter.</div>
+      </div>
+    </div>
+    <div id="tpanel3" style="padding:20px;display:none;flex-direction:column;gap:12px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="aspect-ratio:1;background:var(--card);border-radius:var(--r16);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:40px">🧒</div>
+        <div style="aspect-ratio:1;background:var(--card);border-radius:var(--r16);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:40px">🎨</div>
+        <div style="aspect-ratio:1;background:var(--card);border-radius:var(--r16);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:40px">📚</div>
+        <div style="aspect-ratio:1;background:var(--card);border-radius:var(--r16);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:40px">🌿</div>
+      </div>
+      <div style="font-size:13px;color:var(--text2);text-align:center;padding:8px">Photos from Priya's sessions with families</div>
+    </div>
+    <div style="height:120px"></div>
+  </div>
+  <div class="book-bar">
+    <div class="book-info">
+      <div class="book-price" id="bbPrice">₹280</div>
+      <div class="book-unit">/hr · <span style="color:var(--green)" id="bbAvail">Available today</span></div>
+      <div class="book-avail" id="bbResp" style="font-size:12px;color:var(--text3);margin-left:8px">Replies in ~45min</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" style="flex:0 0 auto;width:48px" onclick="go('s-chat')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:18px;height:18px;margin:0 auto;display:block"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <button class="btn-p" onclick="openBookSheet()">Request to Book</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: MESSAGES -->
+<div class="screen" id="s-messages">
+  <div class="sbar"><span>9:41</span></div>
+  <div class="topnav">
+    <div><div class="page-title">Messages</div><div class="page-sub">3 active conversations</div></div>
+    <div class="icon-btn"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+  </div>
+  <div class="scroll">
+    <div style="padding:4px 0">
+      <div class="msg-thread unr" onclick="go('s-chat')">
+        <div class="th-av">👩<div class="scard-online"></div></div>
+        <div class="th-body">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="th-name">Priya Mehta</div><div class="th-time">9:32 AM</div></div>
+          <div class="th-prev">Booking request for 16 May, 6–10 PM sent ✓</div>
+        </div>
+        <div class="unr-dot"></div>
+      </div>
+      <div class="msg-thread" onclick="go('s-chat')">
+        <div class="th-av">👨</div>
+        <div class="th-body">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="th-name">Arjun Patel</div><div class="th-time">Yesterday</div></div>
+          <div class="th-prev">Thanks! See you Saturday 😊</div>
+        </div>
+      </div>
+      <div class="msg-thread" onclick="go('s-chat')">
+        <div class="th-av">👩</div>
+        <div class="th-body">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="th-name">Neha Shah</div><div class="th-time">Mon</div></div>
+          <div class="th-prev">I'm available on the 22nd as well!</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:24px;text-align:center">
+      <div style="font-size:13px;color:var(--text3)">Conversations are end-to-end encrypted 🔒</div>
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="bnav-item" onclick="go('s-home')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+    <div class="bnav-item" onclick="go('s-browse')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span>Browse</span></div>
+    <div class="bnav-item active"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Messages</span></div>
+    <div class="bnav-item" onclick="go('s-favs')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Saved</span></div>
+    <div class="bnav-item" onclick="go('s-profile-me')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Me</span></div>
+  </div>
+</div>
+
+<!-- SCREEN: CHAT -->
+<div class="screen" id="s-chat">
+  <div class="sbar" style="background:var(--bg2)"><div onclick="go('s-messages')" style="cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--accent);font-size:14px"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back</div></div>
+  <div class="chat-hd">
+    <div class="chat-hd-av">👩<div class="chat-hd-online"></div></div>
+    <div class="chat-hd-info">
+      <div class="chat-hd-name">Priya Mehta</div>
+      <div class="chat-hd-sub pulsing">● Online now</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <div class="icon-btn" onclick="openProfile('priya')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="icon-btn"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></div>
+    </div>
+  </div>
+  <div class="chat-msgs" id="chatMsgs">
+    <div style="text-align:center;font-size:11px;color:var(--text3);padding:4px 0;background:var(--bg3);border-radius:20px;padding:4px 14px;width:fit-content;margin:0 auto">Today · 9:32 AM</div>
+    <div class="bubble them">Hi Priya! I found your profile and would love to book you. Do you have availability this Friday evening?</div>
+    <div style="font-size:10px;color:var(--text3);padding-left:4px">9:32 AM</div>
+    <div class="book-req">
+      <div class="book-req-title">📋 Booking Request</div>
+      <div class="book-req-row"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Date:</span><strong>Friday, 16 May 2026</strong></div>
+      <div class="book-req-row"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Time:</span><strong>6:00 PM – 10:00 PM</strong></div>
+      <div class="book-req-row"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Children:</span><strong>Aarav (6) & Mia (3)</strong></div>
+      <div class="book-req-total"><div class="book-req-total-lbl">Total (4 hrs × ₹280)</div><div class="book-req-total-val">₹1,120</div></div>
+      <div class="book-actions" id="bookActions">
+        <button class="btn-acc" onclick="acceptBooking()">Accept ✓</button>
+        <button class="btn-dec" onclick="declineBooking()">Decline</button>
+      </div>
+    </div>
+  </div>
+  <div class="chat-attach-row">
+    <div class="chat-quick" onclick="sendQuick('Send my location 📍')">Send location</div>
+    <div class="chat-quick" onclick="sendQuick('Booking confirmed ✅')">Confirm booking</div>
+    <div class="chat-quick" onclick="openBookSheet()">New request</div>
+  </div>
+  <div class="chat-in-wrap">
+    <textarea class="chat-in" id="chatInput" placeholder="Type a message…" rows="1" onkeydown="chatKey(event)"></textarea>
+    <button class="send-btn" onclick="sendMsg()">
+      <svg fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- SCREEN: FAVOURITES -->
+<div class="screen" id="s-favs">
+  <div class="sbar"><span>9:41</span></div>
+  <div class="topnav"><div><div class="page-title">Saved Sitters</div><div class="page-sub" id="favCount">0 sitters saved</div></div></div>
+  <div class="scroll">
+    <div class="px20 gap12 mb20 pt8" id="favList" style="padding-top:8px"></div>
+    <div id="favEmpty" style="text-align:center;padding:60px 20px;color:var(--text3)">
+      <div style="font-size:48px;margin-bottom:16px">🤍</div>
+      <div style="font-size:16px;font-weight:500;color:var(--text2);margin-bottom:8px">No saved sitters yet</div>
+      <div style="font-size:13px;color:var(--text3)">Tap the ♡ on any sitter profile to save them</div>
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="bnav-item" onclick="go('s-home')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+    <div class="bnav-item" onclick="go('s-browse')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span>Browse</span></div>
+    <div class="bnav-item" onclick="go('s-messages')" style="position:relative"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Messages</span><div class="bnav-badge">2</div></div>
+    <div class="bnav-item active"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Saved</span></div>
+    <div class="bnav-item" onclick="go('s-profile-me')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Me</span></div>
+  </div>
+</div>
+
+<!-- SCREEN: MY PROFILE -->
+<div class="screen" id="s-profile-me">
+  <div class="sbar"><span>9:41</span></div>
+  <div class="scroll">
+    <div class="my-hero">
+      <div class="my-avt">👤</div>
+      <div class="my-name">Navya Sharma</div>
+      <div class="my-sub">📍 Navrangpura, Ahmedabad · Member since 2024</div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+        <div class="badge badge-v">Verified Parent</div>
+        <div class="badge badge-c">3 Bookings</div>
+      </div>
+    </div>
+    <div style="height:16px"></div>
+    <div class="role-switch" style="margin-bottom:20px">
+      <div class="role-btn active" id="roleParent" onclick="switchRole('parent')">👪 Parent Mode</div>
+      <div class="role-btn" id="roleSitter" onclick="switchRole('sitter')">🌟 Sitter Mode</div>
+    </div>
+    <div id="parentMode">
+      <div class="my-section">
+        <div class="my-sec-title">My Children</div>
+        <div class="my-row"><div class="my-row-left"><div class="my-row-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div><div><div class="my-row-label">Aarav</div><div style="font-size:12px;color:var(--text3)">6 years old</div></div></div><div class="my-row-right">Edit <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="my-row"><div class="my-row-left"><div class="my-row-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div><div><div class="my-row-label">Mia</div><div style="font-size:12px;color:var(--text3)">3 years old</div></div></div><div class="my-row-right">Edit <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="my-row" style="cursor:pointer;color:var(--accent)"><div style="font-size:14px;color:var(--accent)">+ Add child</div></div>
+      </div>
+      <div class="my-section">
+        <div class="my-sec-title">My Bookings</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r16);padding:14px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+              <div style="font-size:14px;font-weight:600;color:var(--text)">Priya Mehta</div>
+              <div class="booking-status bs-pending">⏳ Pending</div>
+            </div>
+            <div style="font-size:13px;color:var(--text2);margin-bottom:4px">📅 16 May 2026, 6–10 PM</div>
+            <div style="font-size:13px;color:var(--accent);font-weight:600">₹1,120</div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r16);padding:14px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+              <div style="font-size:14px;font-weight:600;color:var(--text)">Arjun Patel</div>
+              <div class="booking-status bs-confirmed">✓ Confirmed</div>
+            </div>
+            <div style="font-size:13px;color:var(--text2);margin-bottom:4px">📅 26 Apr 2026, 4–8 PM</div>
+            <div style="font-size:13px;color:var(--accent);font-weight:600">₹1,280</div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r16);padding:14px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+              <div style="font-size:14px;font-weight:600;color:var(--text)">Neha Shah</div>
+              <div class="booking-status bs-done">✓ Completed</div>
+            </div>
+            <div style="font-size:13px;color:var(--text2);margin-bottom:4px">📅 10 Apr 2026, 2–6 PM</div>
+            <div style="font-size:13px;color:var(--text2);font-weight:600">₹880 <span style="color:var(--green);font-size:11px">Reviewed ★</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="my-section">
+        <div class="my-sec-title">Preferences</div>
+        <div class="my-row"><div class="my-row-left"><div class="my-row-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="my-row-label">Verified sitters only</div></div><div class="toggle" id="t1" onclick="tog('t1')"><div class="toggle-k"></div></div></div>
+        <div class="my-row"><div class="my-row-left"><div class="my-row-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="my-row-label">Push notifications</div></div><div class="toggle" id="t2" onclick="tog('t2')"><div class="toggle-k"></div></div></div>
+        <div class="my-row"><div class="my-row-left"><div class="my-row-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="my-row-label">Female sitters only</div></div><div class="toggle off" id="t3" onclick="tog('t3')"><div class="toggle-k"></div></div></div>
+      </div>
+      <div class="my-section">
+        <div class="my-sec-title">Account</div>
+        <div class="my-row"><div class="my-row-left"><div class="my-row-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="my-row-label">Payment Methods</div></div><div class="my-row-right"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="my-row"><div class="my-row-left"><div class="my-row-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div class="my-row-label">Past Bookings</div></div><div class="my-row-right">12 total <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="my-row"><div class="my-row-left"><div class="my-row-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></div><div class="my-row-label">Invite Friends</div></div><div class="my-row-right">₹150 credit <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="my-row" style="color:var(--red)"><div class="my-row-left"><div class="my-row-icon"><svg fill="none" stroke="var(--red)" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div><div class="my-row-label" style="color:var(--red)">Sign Out</div></div></div>
+      </div>
+      <div style="height:100px"></div>
+    </div>
+    <div id="sitterMode" style="display:none">
+      <div class="earn-card">
+        <div class="earn-sub">This month's earnings</div>
+        <div class="earn-amt">₹12,400</div>
+        <div class="earn-meta">↑ 18% from last month · 14 sessions</div>
+        <div class="earn-row">
+          <div class="earn-mini"><div class="earn-mini-val">14</div><div class="earn-mini-lbl">Sessions done</div></div>
+          <div class="earn-mini"><div class="earn-mini-val">4.9★</div><div class="earn-mini-lbl">Avg rating</div></div>
+          <div class="earn-mini"><div class="earn-mini-val">98%</div><div class="earn-mini-lbl">Acceptance rate</div></div>
+          <div class="earn-mini"><div class="earn-mini-val">2 min</div><div class="earn-mini-lbl">Response time</div></div>
+        </div>
+      </div>
+      <div class="my-section">
+        <div class="my-sec-title">Availability</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <div class="chip active">Mon</div><div class="chip active">Tue</div><div class="chip">Wed</div><div class="chip active">Thu</div><div class="chip active">Fri</div><div class="chip active">Sat</div><div class="chip">Sun</div>
+        </div>
+        <div style="margin-top:14px;font-size:13px;color:var(--text2)">Hours: <strong style="color:var(--text)">8 AM – 10 PM</strong></div>
+      </div>
+      <div class="my-section">
+        <div class="my-sec-title">Upcoming Bookings</div>
+        <div style="background:var(--card);border:1px solid rgba(46,204,113,0.2);border-radius:var(--r16);padding:14px;margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><div style="font-size:14px;font-weight:600">Navya Sharma</div><div class="booking-status bs-pending">⏳ Pending</div></div>
+          <div style="font-size:13px;color:var(--text2)">📅 16 May, 6–10 PM · 2 kids · ₹1,120</div>
+          <div class="btn-row" style="margin-top:12px"><button class="btn-acc" style="border-radius:12px;padding:10px" onclick="showToast('Booking confirmed! ✓')">Accept</button><button class="btn-dec" style="border-radius:12px;padding:10px">Decline</button></div>
+        </div>
+      </div>
+      <div class="my-section">
+        <div class="my-sec-title">My Rates</div>
+        <div class="my-row"><div class="my-row-label">Standard rate</div><div class="my-row-right" style="color:var(--accent);font-weight:600">₹280/hr <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="my-row"><div class="my-row-label">Night rate (after 9PM)</div><div class="my-row-right" style="color:var(--accent);font-weight:600">₹350/hr <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="my-row"><div class="my-row-label">Weekend rate</div><div class="my-row-right" style="color:var(--accent);font-weight:600">₹320/hr <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+      </div>
+      <div style="height:60px"></div>
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="bnav-item" onclick="go('s-home')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+    <div class="bnav-item" onclick="go('s-browse')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span>Browse</span></div>
+    <div class="bnav-item" onclick="go('s-messages')" style="position:relative"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Messages</span><div class="bnav-badge">2</div></div>
+    <div class="bnav-item" onclick="go('s-favs')"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Saved</span></div>
+    <div class="bnav-item active"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Me</span></div>
+  </div>
+</div>
+
+<!-- SCREEN: NOTIFICATIONS -->
+<div class="screen" id="s-notifs">
+  <div class="sbar"><div onclick="go('s-home')" style="cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--accent);font-size:14px"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back</div></div>
+  <div class="topnav"><div><div class="page-title">Notifications</div></div><div style="font-size:13px;color:var(--accent);cursor:pointer">Mark all read</div></div>
+  <div class="scroll">
+    <div class="notif-item unr"><div class="notif-icon" style="background:rgba(78,205,196,0.1)">📋</div><div class="notif-body"><div class="notif-text"><b>Priya Mehta</b> accepted your booking request for 16 May</div><div class="notif-time">Just now</div></div></div>
+    <div class="notif-item unr"><div class="notif-icon" style="background:rgba(255,107,74,0.1)">💬</div><div class="notif-body"><div class="notif-text"><b>Arjun Patel</b> sent you a message</div><div class="notif-time">2 hours ago</div></div></div>
+    <div class="notif-item"><div class="notif-icon" style="background:rgba(255,217,61,0.1)">⭐</div><div class="notif-body"><div class="notif-text">Don't forget to review <b>Neha Shah</b> for your last session</div><div class="notif-time">1 day ago</div></div></div>
+    <div class="notif-item"><div class="notif-icon" style="background:rgba(46,204,113,0.1)">🎉</div><div class="notif-body"><div class="notif-text"><b>Divya Joshi</b> is now available in your area today!</div><div class="notif-time">2 days ago</div></div></div>
+    <div class="notif-item"><div class="notif-icon" style="background:rgba(255,107,74,0.1)">💰</div><div class="notif-body"><div class="notif-text">You earned a <b>₹150 referral credit</b> — invite more friends!</div><div class="notif-time">3 days ago</div></div></div>
+  </div>
+</div>
+
+<!-- BOOKING REQUEST SHEET -->
+<div class="sheet-overlay" id="bookSheet" onclick="closeSheet(event)">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Request a Booking</div>
+    <div class="sheet-sub" id="sheetSub">with Priya Mehta · ₹280/hr</div>
+    <div class="form-group">
+      <label class="form-label">Date</label>
+      <input class="form-input" type="date" id="bookDate" value="2026-05-16">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Time slot</label>
+      <div class="time-slots">
+        <div class="time-slot" onclick="selSlot(this)">9 AM–1 PM</div>
+        <div class="time-slot" onclick="selSlot(this)">1 PM–5 PM</div>
+        <div class="time-slot sel" onclick="selSlot(this)">6 PM–10 PM</div>
+        <div class="time-slot" onclick="selSlot(this)">Custom</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Number of children</label>
+      <div class="filter-row" style="margin-bottom:0">
+        <div class="filter-opt sel" onclick="selChildren(this)">1 child</div>
+        <div class="filter-opt" onclick="selChildren(this)">2 children</div>
+        <div class="filter-opt" onclick="selChildren(this)">3 children</div>
+        <div class="filter-opt" onclick="selChildren(this)">4+</div>
+      </div>
+    </div>
+    <div class="price-preview" id="pricePreview">
+      <div class="pp-row"><span>Rate</span><span>₹280/hr</span></div>
+      <div class="pp-row"><span>Duration</span><span>4 hours</span></div>
+      <div class="pp-row"><span>Platform fee</span><span>₹50</span></div>
+      <div class="pp-row"><span>Total</span><span style="color:var(--accent)">₹1,170</span></div>
+    </div>
+    <button class="btn-p" onclick="submitBooking()">Send Request →</button>
+  </div>
+</div>
+
+<!-- FILTER SHEET -->
+<div class="sheet-overlay" id="filterSheet" onclick="closeFilterSheet(event)">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Filters</div>
+    <div style="margin-bottom:6px">
+      <div class="form-label">Availability</div>
+      <div class="filter-row">
+        <div class="filter-opt sel" onclick="toggleFilt(this)">Today</div>
+        <div class="filter-opt" onclick="toggleFilt(this)">This week</div>
+        <div class="filter-opt" onclick="toggleFilt(this)">Weekends</div>
+        <div class="filter-opt" onclick="toggleFilt(this)">Any time</div>
+      </div>
+    </div>
+    <div class="range-wrap">
+      <div class="form-label">Max hourly rate</div>
+      <div class="range-val"><span>₹100</span><span id="rateVal">₹300</span></div>
+      <input type="range" min="100" max="600" value="300" step="10" oninput="document.getElementById('rateVal').textContent='₹'+this.value">
+    </div>
+    <div class="range-wrap">
+      <div class="form-label">Min rating</div>
+      <div class="range-val"><span>Any</span><span id="ratingVal">4.0★</span></div>
+      <input type="range" min="0" max="5" value="4" step="0.5" oninput="document.getElementById('ratingVal').textContent=this.value+'★'">
+    </div>
+    <div style="margin-bottom:16px">
+      <div class="form-label">Gender preference</div>
+      <div class="filter-row">
+        <div class="filter-opt sel" onclick="toggleFilt(this)">Any</div>
+        <div class="filter-opt" onclick="toggleFilt(this)">Female</div>
+        <div class="filter-opt" onclick="toggleFilt(this)">Male</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="closeFilterSheet({target:document.getElementById('filterSheet')})">Reset</button>
+      <button class="btn-p" onclick="closeFilterSheet({target:document.getElementById('filterSheet')});showToast('Filters applied ✓')">Apply Filters</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Booking request sent!</div>
+
+<script>
+// DATA
+var sitters=[
+  {id:'priya',name:'Priya Mehta',emoji:'👩',bg:'rgba(255,107,74,0.12)',loc:'Navrangpura',dist:'0.8km',rating:4.9,reviews:38,exp:'4 yrs',rate:280,avail:true,verified:true,tags:['Toddlers','CPR Cert','Homework'],bio:'Hi! I\'m Priya, a certified childcare provider with 4+ years working with toddlers and school-age children. CPR trained, punctual, and love making learning fun.',ages:'1–12 yrs',resp:'~45 min'},
+  {id:'arjun',name:'Arjun Patel',emoji:'👨',bg:'rgba(59,130,246,0.12)',loc:'Satellite',dist:'2.1km',rating:4.8,reviews:52,exp:'6 yrs',rate:320,avail:true,verified:true,tags:['School-age','Sports','Special needs'],bio:'Experienced male childcare professional with 6 years. Ex-school teacher. Excellent with active kids and sports activities.',ages:'3–16 yrs',resp:'~30 min'},
+  {id:'divya',name:'Divya Joshi',emoji:'👩',bg:'rgba(255,217,61,0.12)',loc:'Maninagar',dist:'3.4km',rating:5.0,reviews:74,exp:'8 yrs',rate:380,avail:true,verified:true,tags:['Newborns','Twins','Montessori'],bio:'8 years experience with newborns, toddlers and multiples. Montessori trained and certified. The most experienced sitter in your area.',ages:'0–8 yrs',resp:'~15 min'},
+  {id:'neha',name:'Neha Shah',emoji:'👩',bg:'rgba(46,204,113,0.12)',loc:'Vastrapur',dist:'1.6km',rating:4.4,reviews:19,exp:'2 yrs',rate:220,avail:false,verified:false,tags:['Toddlers','Arts & Crafts'],bio:'Friendly and creative sitter studying Early Childhood Education. Love arts, crafts and outdoor play.',ages:'2–10 yrs',resp:'~2 hrs'},
+  {id:'rohan',name:'Rohan Desai',emoji:'👨',bg:'rgba(78,205,196,0.12)',loc:'Bopal',dist:'4.2km',rating:4.7,reviews:31,exp:'5 yrs',rate:290,avail:true,verified:true,tags:['School-age','Coding','Science'],bio:'Tech-savvy childcare professional. Teaches coding basics and science experiments to kids aged 5+.',ages:'5–16 yrs',resp:'~1 hr'},
+  {id:'kavya',name:'Kavya Nair',emoji:'👩',bg:'rgba(255,107,74,0.08)',loc:'Paldi',dist:'2.8km',rating:4.6,reviews:23,exp:'3 yrs',rate:250,avail:true,verified:true,tags:['Toddlers','Music','Dance'],bio:'Music and dance-loving sitter. Makes every session fun with songs, stories and movement.',ages:'1–8 yrs',resp:'~1 hr'},
+];
+var favs=new Set();
+var curProfile=null;
+var backScreen='s-home';
+var obStep=0;
+var selRole='parent';
+var curFilter='all';
+var browseFilter_='all';
+var calMonth=4;
+var calYear=2026;
+var calSel=null;
+
+// ONBOARDING
+function nextSlide(){
+  if(obStep<3){
+    document.getElementById('ob'+obStep).classList.add('prev');
+    document.getElementById('ob'+obStep).classList.remove('active');
+    obStep++;
+    setTimeout(()=>{
+      document.getElementById('ob'+(obStep-1)).style.display='none';
+      document.getElementById('ob'+obStep).classList.add('active');
+    },10);
+    document.querySelectorAll('.ob-dot').forEach((d,i)=>d.classList.toggle('active',i===obStep));
+    if(obStep===3)document.getElementById('ob-btn').textContent='Let\'s Go!';
+  }else{skipOnboard();}
+}
+function skipOnboard(){document.getElementById('onboard').classList.add('hidden');}
+function pickRole(r){
+  selRole=r;
+  document.getElementById('rc-parent').classList.toggle('sel',r==='parent');
+  document.getElementById('rc-sitter').classList.toggle('sel',r==='sitter');
+}
+
+// NAVIGATION
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  if(id==='s-favs')renderFavs();
+  if(id==='s-browse')renderBrowse();
+}
+function goBack(){go(backScreen);}
+function openProfile(id){
+  var s=sitters.find(x=>x.id===id);
+  if(!s)return;
+  curProfile=id;
+  backScreen=document.querySelector('.screen.active').id||'s-home';
+  document.getElementById('profAvt').textContent=s.emoji;
+  document.getElementById('profAvt').style.background=s.bg;
+  document.getElementById('profName').textContent=s.name;
+  document.getElementById('profLoc').textContent='📍 '+s.loc+' · '+s.dist+' away';
+  document.getElementById('profRating').textContent=s.rating+'★';
+  document.getElementById('profReviews').textContent=s.reviews;
+  document.getElementById('profExp').textContent=s.exp;
+  document.getElementById('profRate').textContent='₹'+s.rate;
+  document.getElementById('profBio').textContent=s.bio;
+  document.getElementById('profAges').textContent=s.ages;
+  document.getElementById('profDetLoc').textContent=s.loc+', Ahmedabad';
+  document.getElementById('profAvailBadge').textContent=s.avail?'Available today':'Check calendar';
+  document.getElementById('profAvailBadge').className='badge '+(s.avail?'badge-v':'badge-p');
+  document.getElementById('bbPrice').textContent='₹'+s.rate;
+  document.getElementById('bbAvail').textContent=s.avail?'Available today':'Check calendar';
+  document.getElementById('bbResp').textContent='Replies in '+s.resp;
+  document.getElementById('profRatingBig').textContent=s.rating;
+  document.getElementById('profRevCount').textContent=s.reviews+' reviews';
+  document.getElementById('sheetSub').textContent='with '+s.name+' · ₹'+s.rate+'/hr';
+  var fi=document.getElementById('favIcon');
+  fi.style.fill=favs.has(id)?'var(--accent)':'none';
+  fi.style.stroke=favs.has(id)?'var(--accent)':'currentColor';
+  switchTab(0);
+  buildCal();
+  document.getElementById('profileScroll').scrollTop=0;
+  go('s-sitter-profile');
+}
+
+// TABS
+function switchTab(i){
+  for(var j=0;j<4;j++){
+    var p=document.getElementById('tpanel'+j);
+    if(p)p.style.display=i===j?'flex':'none';
+  }
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+}
+
+// CALENDAR
+var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var busyDays={4:2026:[3,6,7,10,14,19,23,28],5:2026:[5,12,18,21,26]};
+function buildCal(){
+  var grid=document.getElementById('calGrid');
+  document.getElementById('calMonth').textContent=months[calMonth]+' '+calYear;
+  var dayLabels=['S','M','T','W','T','F','S'];
+  var html=dayLabels.map(d=>'<div class="cal-lbl">'+d+'</div>').join('');
+  var first=new Date(calYear,calMonth,1).getDay();
+  for(var i=0;i<first;i++)html+='<div class="cal-d em"></div>';
+  var days=new Date(calYear,calMonth+1,0).getDate();
+  var today=new Date();
+  var bd=(busyDays[calMonth+1]&&busyDays[calMonth+1][calYear])||[3,6,7,10,14,19,23,28];
+  for(var d=1;d<=days;d++){
+    var isToday=today.getDate()===d&&today.getMonth()===calMonth&&today.getFullYear()===calYear;
+    var isBusy=bd.includes(d);
+    var isSel=calSel===d;
+    var cls='cal-d'+(isToday?' td':isSel?' sl':isBusy?' bk':' av');
+    html+='<div class="'+cls+'" onclick="calClick('+d+')">'+d+'</div>';
+  }
+  grid.innerHTML=html;
+}
+function calNav(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}calSel=null;buildCal();}
+function calClick(d){calSel=d;buildCal();document.getElementById('calSelText').textContent=months[calMonth]+' '+d+', '+calYear+' selected';document.getElementById('calSelSub').textContent='Tap "Request a Booking" to confirm';}
+
+// SITTER LIST
+function renderSitterCard(s){
+  var faved=favs.has(s.id);
+  return '<div class="slist-card" onclick="openProfile(\''+s.id+'\')">'
+    +'<div class="slist-avt" style="background:'+s.bg+'">'+s.emoji+'<div class="'+(s.avail?'scard-online':'')+'"></div></div>'
+    +'<div class="slist-body">'
+    +'<div class="slist-row"><div class="slist-name">'+s.name+(s.verified?' <span style="font-size:10px;color:var(--green)">✓</span>':'')+'</div><div class="slist-rate">₹'+s.rate+'/hr</div></div>'
+    +'<div class="slist-meta">📍 '+s.loc+' · '+s.dist+' · '+s.exp+' exp · <span style="color:'+(s.rating>=4.8?'var(--accent3)':'var(--text2)')+'">★'+s.rating+'</span></div>'
+    +'<div class="slist-tags">'+s.tags.map(t=>'<div class="tag">'+t+'</div>').join('')+'<div class="tag '+(s.avail?'avail-yes':'avail-no')+'">'+(s.avail?'✓ Today':'Busy')+'</div></div>'
+    +'</div></div>';
+}
+function renderHome(){
+  var q=(document.getElementById('homeSearch')||{}).value||'';
+  var f=curFilter;
+  var list=sitters.filter(s=>{
+    if(q&&!s.name.toLowerCase().includes(q.toLowerCase())&&!s.loc.toLowerCase().includes(q.toLowerCase()))return false;
+    if(f==='today'&&!s.avail)return false;
+    if(f==='cheap'&&s.rate>300)return false;
+    if(f==='top'&&s.rating<4.7)return false;
+    if(f==='verified'&&!s.verified)return false;
+    if(f==='newborn'&&!s.tags.some(t=>t.toLowerCase().includes('newborn')||t.toLowerCase().includes('infant')))return false;
+    return true;
+  });
+  document.getElementById('sitterList').innerHTML=list.map(renderSitterCard).join('');
+  document.getElementById('homeCount').textContent=list.length+' results';
+}
+function renderBrowse(){
+  var q=(document.getElementById('browseSearch')||{}).value||'';
+  var f=browseFilter_;
+  var list=sitters.filter(s=>{
+    if(q&&!s.name.toLowerCase().includes(q.toLowerCase())&&!s.loc.toLowerCase().includes(q.toLowerCase()))return false;
+    if(f==='today'&&!s.avail)return false;
+    if(f==='cheap'&&s.rate>280)return false;
+    if(f==='top'&&s.rating<4.7)return false;
+    if(f==='verified'&&!s.verified)return false;
+    return true;
+  });
+  document.getElementById('browseList').innerHTML=list.map(renderSitterCard).join('');
+  document.getElementById('browseCount').textContent=list.length+' sitters near you';
+}
+function liveSearch(){renderHome();}
+function browseFilter(){renderBrowse();}
+function filterChip(el,f){curFilter=f;document.querySelectorAll('#homeChips .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderHome();}
+function filterBChip(el,f){browseFilter_=f;document.querySelectorAll('#browseChips .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderBrowse();}
+
+// FAVOURITES
+function toggleFav(){
+  if(!curProfile)return;
+  if(favs.has(curProfile))favs.delete(curProfile);else favs.add(curProfile);
+  var fi=document.getElementById('favIcon');
+  fi.style.fill=favs.has(curProfile)?'var(--accent)':'none';
+  fi.style.stroke=favs.has(curProfile)?'var(--accent)':'currentColor';
+  showToast(favs.has(curProfile)?'Saved to favourites ❤️':'Removed from saved');
+}
+function renderFavs(){
+  var list=sitters.filter(s=>favs.has(s.id));
+  document.getElementById('favList').innerHTML=list.map(renderSitterCard).join('');
+  document.getElementById('favEmpty').style.display=list.length?'none':'block';
+  document.getElementById('favCount').textContent=list.length+' sitter'+(list.length!==1?'s':'')+' saved';
+}
+
+// CHAT
+function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function sendMsg(){
+  var inp=document.getElementById('chatInput');
+  var val=inp.value.trim();if(!val)return;
+  var msgs=document.getElementById('chatMsgs');
+  var b=document.createElement('div');b.className='bubble me';b.textContent=val;
+  msgs.appendChild(b);
+  var t=document.createElement('div');t.className='btime';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  msgs.appendChild(t);
+  inp.value='';msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    var r=document.createElement('div');r.className='bubble them';r.textContent=autoReply(val);
+    msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;
+  },1200);
+}
+function sendQuick(msg){document.getElementById('chatInput').value=msg;sendMsg();}
+function autoReply(msg){
+  var m=msg.toLowerCase();
+  if(m.includes('location'))return'Sure! I\'ll share my location shortly 📍';
+  if(m.includes('confirm'))return'Great! Booking confirmed ✅ See you then!';
+  if(m.includes('rate')||m.includes('price'))return'My standard rate is ₹280/hr. Night sessions (after 9PM) are ₹350/hr.';
+  if(m.includes('available')||m.includes('free'))return'Yes! I\'m available. Check my calendar or just let me know the date 📅';
+  if(m.includes('thank'))return'You\'re very welcome! Looking forward to meeting the little ones 🌟';
+  return'Thanks for your message! I\'ll get back to you shortly 😊';
+}
+function acceptBooking(){
+  document.getElementById('bookActions').innerHTML='<div style="text-align:center;width:100%;color:var(--green);font-weight:600;padding:8px">✓ Booking Confirmed!</div>';
+  var msgs=document.getElementById('chatMsgs');
+  setTimeout(()=>{
+    var b=document.createElement('div');b.className='bubble them';b.textContent='Wonderful! See you Friday at 6 PM. I\'ll bring some activities for the kids 🌟';
+    msgs.appendChild(b);msgs.scrollTop=msgs.scrollHeight;
+    showToast('Booking confirmed with Priya! ✓');
+  },500);
+}
+function declineBooking(){
+  document.getElementById('bookActions').innerHTML='<div style="text-align:center;width:100%;color:var(--text2);font-size:13px;padding:6px">Request declined</div>';
+  showToast('Request declined');
+}
+
+// BOOK SHEET
+function openBookSheet(){document.getElementById('bookSheet').classList.add('open');}
+function closeSheet(e){if(e.target===document.getElementById('bookSheet'))document.getElementById('bookSheet').classList.remove('open');}
+function submitBooking(){document.getElementById('bookSheet').classList.remove('open');go('s-chat');showToast('Booking request sent to Priya! 🎉');}
+function selSlot(el){document.querySelectorAll('.time-slot').forEach(s=>s.classList.remove('sel'));el.classList.add('sel');}
+function selChildren(el){document.querySelectorAll('.filter-row .filter-opt').forEach(s=>s.classList.remove('sel'));el.classList.add('sel');}
+
+// FILTER SHEET
+function openFilter(){document.getElementById('filterSheet').classList.add('open');}
+function closeFilterSheet(e){if(e.target===document.getElementById('filterSheet'))document.getElementById('filterSheet').classList.remove('open');}
+function toggleFilt(el){el.classList.toggle('sel');}
+
+// ROLE SWITCH
+function switchRole(r){
+  selRole=r;
+  document.getElementById('roleParent').classList.toggle('active',r==='parent');
+  document.getElementById('roleSitter').classList.toggle('active',r==='sitter');
+  document.getElementById('parentMode').style.display=r==='parent'?'block':'none';
+  document.getElementById('sitterMode').style.display=r==='sitter'?'block':'none';
+}
+
+// TOGGLES
+function tog(id){document.getElementById(id).classList.toggle('off');}
+
+// TOAST
+var toastTimer;
+function showToast(msg){
+  var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// INIT
+renderHome();
+renderBrowse();
+buildCal();
+setTimeout(()=>skipOnboard(),100);
+</script>
+</body>
+</html>
+HTMLEOF
+echo "Done: $(wc -c < /mnt/user-data/outputs/nestly-app.html) bytes"
